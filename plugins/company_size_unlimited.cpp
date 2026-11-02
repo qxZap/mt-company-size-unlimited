@@ -108,11 +108,14 @@ static DWORD WINAPI run(LPVOID) {
     if (!ok) { MT_LOG("FAILED: MotorTownGameState.Net_ServerConfig not found -- spawn caps stay as they are"); return 0; }
     MT_LOG("Net_ServerConfig at +%x (company +%x, corporation +%x, fleet +%x)", oCfg, oField[0], oField[1], oField[2]);
 
+    int at = -1;
     for (;;) {  // the game state is rebuilt with every world load
         std::vector<uintptr_t> found;
-        for (int i = 0, n = api->num_objects(); i < n; i++) {
+        uintptr_t known = at >= 0 ? api->object(at) : 0;
+        if (known && api->is_a(classOf(known), cGameState)) found.push_back(known);
+        for (int i = 0, n = found.empty() ? api->num_objects() : 0; i < n; i++) {
             uintptr_t o = api->object(i);
-            if (o && !isCDO(o) && api->is_a(classOf(o), cGameState)) found.push_back(o);
+            if (o && !isCDO(o) && api->is_a(classOf(o), cGameState)) { found.push_back(o); at = i; }
         }
         if (!found.empty() && api->game_thread_ready()) {
             { std::lock_guard<std::mutex> g(lock); states.swap(found); }
