@@ -1,4 +1,4 @@
-// Company Slots -- more company vehicles, as plugins\mt_plugin_CompanySlots.dll.
+// Company Size Unlimited -- more company vehicles, as plugins\mt_plugin_CompanySizeUnlimited.dll.
 //
 // Two separate caps:
 //
@@ -22,7 +22,7 @@
 // so they are raised here to at least the ini values. A dedicated server sets its own
 // in DedicatedServerConfig.json (this plugin on the server raises them the same way).
 //
-// Settings: Binaries\Win64\company_slots.ini, [CompanySlots].
+// Settings: Binaries\Win64\company_size_unlimited.ini, [CompanySlots].
 //
 // shortcut: the owned cap is checked by whoever runs the company -- single player, the
 // host, or the dedicated server. A client of a vanilla server keeps vanilla's 15.
@@ -62,7 +62,7 @@ static std::vector<uintptr_t> states;
 // The loader owns the ini files: it merges every plugin's values into one
 // file, so two plugins that set the same key do not overwrite each other.
 static int setting(const wchar_t* key, int def) {
-    int n = iniInt(L"company_slots.ini", L"CompanySlots", key, def);
+    int n = iniInt(L"company_size_unlimited.ini", L"CompanySlots", key, def);
     MT_LOG("setting %ls = %d", key, n);
     return n;
 }
@@ -81,7 +81,7 @@ static void raise(void*) {
 }
 
 static DWORD WINAPI run(LPVOID) {
-    MT_LOG("Company Slots loaded");
+    MT_LOG("Company Size Unlimited loaded");
     int bought = setting(L"MaxBoughtSlots", 95);  // vanilla 15
     want[0] = setting(L"MaxSpawnedPerCompany", 100);
     want[1] = setting(L"MaxSpawnedPerCorporation", 100);
@@ -124,6 +124,7 @@ static DWORD WINAPI run(LPVOID) {
 
 extern "C" __declspec(dllexport) int PluginInit(const MtApi* a) {
     if (!attach(a)) return 1;
+    MoveFileW((gameDir() + L"company_slots.ini").c_str(), (gameDir() + L"company_size_unlimited.ini").c_str());  // settings from before the rename
     CloseHandle(CreateThread(nullptr, 0, run, nullptr, 0, nullptr));
     return 0;
 }
