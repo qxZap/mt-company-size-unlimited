@@ -125,6 +125,7 @@ static DWORD WINAPI run(LPVOID) {
 extern "C" __declspec(dllexport) int PluginInit(const MtApi* a) {
     if (!attach(a)) return 1;
     MoveFileW((gameDir() + L"company_slots.ini").c_str(), (gameDir() + L"company_size_unlimited.ini").c_str());  // settings from before the rename
+    if (iniDisabled(L"company_size_unlimited.ini")) return 0;
     CloseHandle(CreateThread(nullptr, 0, run, nullptr, 0, nullptr));
     return 0;
 }

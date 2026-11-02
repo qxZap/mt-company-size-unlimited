@@ -4,7 +4,7 @@ More company vehicle slots and higher spawn caps.
 
 Lifts the 20 company vehicle limit: buy more slots, and the counter, the save load and vehicle ids all follow.
 
-Settings: `Binaries\Win64\company_size_unlimited.ini`.
+Settings: `Binaries\Win64\plugins\company_size_unlimited.ini`.
 
 Do not load a save with more than 20 company vehicles without this plugin. On someone else's server, that server's limits apply.
 
