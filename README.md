@@ -1,3 +1,7 @@
+<p align="center">
+  <img src=".github/hero.png" alt="Company Size Unlimited" width="100%">
+</p>
+
 # Company Size Unlimited
 
 More company vehicle slots and higher spawn caps.
