@@ -110,6 +110,7 @@ static DWORD WINAPI run(LPVOID) {
 
     int at = -1;
     for (;;) {  // the game state is rebuilt with every world load
+        if (api->stopping()) return 0;   // the game is closing: this thread ends with it
         std::vector<uintptr_t> found;
         uintptr_t known = at >= 0 ? api->object(at) : 0;
         if (known && api->is_a(classOf(known), cGameState)) found.push_back(known);
